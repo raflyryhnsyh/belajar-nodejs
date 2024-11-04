@@ -1,32 +1,72 @@
-const fs = require('fs');
-const readline = require('readline');
+// mengambil argument  dari command line
+const { type } = require('os');
+const { argv } = require('process');
+const yargs = require('yargs');
+const contact = require('./contacts');
+yargs.command({
+    command: 'add',
+    describe: 'menambahkan contact baru',
+    builder: {
+        nama: {
+            describe: "Nama lengkap",
+            demandOption: true,
+            type: 'string',
+        },
+        email: {
+            describe: "Alamat email",
+            demandOption: false,
+            type: 'string',
+        },
+        noHP: {
+            describe: "Nomor Handphone",
+            demandOption: true,
+            type: 'string',
+        }
+    },
+    handler(argv) {
+        contact.simpanContact(argv.nama, argv.email, argv.noHP);
+    },
+}).demandCommand();
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
+// menampilkan daftar semua nama & no hp contact
+yargs.command({
+    command: 'list',
+    describe: 'Menampilkan daftar semua nama & no hp contact',
+    handler() {
+        contact.listContact();
+    },
 });
 
-// membuat folder data
-const dirPath = './data';
-if(!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath);
-}
-
-rl.question('Masukkan nama anda : ', (nama) => {
-    rl.question('Masukkan nomer anda : ', (noHP) => {
-        const contact = { nama, noHP };
-        const file = fs.readFileSync('data/contacts.json', 'utf8');
-        const contacts = JSON.parse(file);
-        console.log(contacts);
-
-        contacts.push(contact);
-        console.log(contact);
-
-        fs.writeFileSync('data/contacts.json', JSON.stringify(contacts));
-        console.log('Terimakasih sudah menambahkan data.');
-
-        rl.close();
-    })
+// menampilkan detail sebuah contact
+yargs.command({
+    command: 'detail',
+    describe: 'Menampilkan sebuah contact berdasarkan nama',
+    builder: {
+        nama: {
+            describe: "Nama dicari",
+            demandOption: true,
+            type: 'string',
+        },
+    },
+    handler(argv) {
+        contact.detailContact(argv.nama);
+    },
 });
 
+// menghapus sebuah contact berdasarkan nama
+yargs.command({
+    command: 'delete',
+    describe: 'Menghapus sebuah contact berdasarkan nama',
+    builder: {
+        nama: {
+            describe: "Nama dihapus",
+            demandOption: true,
+            type: 'string',
+        },
+    },
+    handler(argv) {
+        contact.deleteContact(argv.nama);
+    },
+});
 
+yargs.parse();
