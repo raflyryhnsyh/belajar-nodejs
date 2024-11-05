@@ -1,0 +1,46 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Daftar Mahasiswa</h2>
+
+            <a href="/mahasiswa/add" class="btn btn-primary mb-2">Tambah Data Mahasiswa</a>
+
+            <% if (msg.length !== 0) { %>
+                <div class="alert alert-success fw-bold" role="alert"><%= msg %></div>
+            <% } %>
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% if (allMahasiswa.length < 1) { %>
+                        <tr>
+                            <td colspan="4">
+                                <div class="alert alert-danger fw-bold" role="alert">
+                                    Data Contact Masih Kosong!
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                    <% allMahasiswa.forEach((mahasiswa, i) => { i++ %>
+                        <tr>
+                          <th scope="row"><%= i++ %></th>
+                          <td><%= mahasiswa.nama %></td>
+                          <td><%= mahasiswa.email %></td>
+                          <td>
+                              <a href="/mahasiswa/<%= mahasiswa.nama %>" class="btn btn-success badge rounded-pill"><i class="bi bi-info-circle"></i> detail</a>
+                          </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+
+        </div>
+    </div>
+</div>
