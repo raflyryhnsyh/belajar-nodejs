@@ -1,0 +1,19 @@
+
+    <h1>Web Server</h1>
+    <p>Welcome to Index</p>
+    <h2>Halo <%= nama %></h2>
+
+    <h4>Daftar Mahasiswa</h4>
+
+    <% if (allMahasiswa.length < 1) { %>
+        <div class="alert alert-danger fw-bold" role="alert">
+            Data Contact Masih Kosong!
+        </div>
+    <% } else { %>
+        <% allMahasiswa.forEach(mahasiswa => { %>
+            <ul>
+                <li>Nama : <%= mahasiswa.nama %></li>
+                <li>Email : <%= mahasiswa.email %> </li>
+            </ul>
+        <% }) %>
+    <% } %>
