@@ -13,7 +13,8 @@
                 </div>
             <% } %>
 
-            <form method="post" action="/mahasiswa/update">
+            <form method="post" action="/mahasiswa?_method=PUT">
+                <input type="hidden" name="_id" value="<%= mahasiswa._id %>" />
                 <input type="hidden" name="oldNama" value="<%= mahasiswa.oldNama || mahasiswa.nama %>" />
                 <div class="mb-3">
                   <label for="nama" class="form-label">Nama</label>

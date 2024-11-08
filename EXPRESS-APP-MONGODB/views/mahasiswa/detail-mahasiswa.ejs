@@ -6,7 +6,7 @@
             <% if (!mahasiswa) { %>
                 
                 <div class="alert alert-danger fw-bold" role="alert">
-                    Data Contact Tidak Ada! <br />
+                    Data Mahasiswa Tidak Ada! <br />
                     <a href="/mahasiswa" class="alert-link fw-normal">&laquo; kembali ke daftar mahasiswa</a>
                 </div>
 
@@ -16,8 +16,11 @@
                       <h5 class="card-title"><%= mahasiswa.nama %></h5>
                       <h6 class="card-subtitle mb-2 text-body-secondary"><%= mahasiswa.nohp %></h6>
                       <p class="card-text"><%= mahasiswa.email %></p>
-                      <a href="/mahasiswa/edit/<%= mahasiswa.nama %>" class="btn btn-info badge" >edit mahasiswa</a><br>
-                      <a href="/mahasiswa/delete/<%= mahasiswa.nama %>" class="btn btn-danger badge mt-3" onclick="return confirm('Yakin?');">hapus mahasiswa</a>
+                      <a href="/mahasiswa/edit/<%= mahasiswa.nama %>" class="btn btn-info badge" >edit mahasiswa</a>
+                      <form action="/mahasiswa?_method=DELETE" method="POST" class="d-inline">
+                        <input type="hidden" name="nama" value="<%= mahasiswa.nama %>" />
+                        <button type="submit" class="btn btn-danger badge mt-3" onclick="return confirm('Yakin?');">hapus mahasiswa</button>
+                      </form>
                       <a href="/mahasiswa" class="card-link d-block mt-3">&laquo; Kembali ke daftar mahasiswa</a>
                     </div>
                 </div>

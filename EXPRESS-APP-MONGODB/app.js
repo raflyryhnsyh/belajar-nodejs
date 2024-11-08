@@ -1,26 +1,30 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const { loadMahasiswa } = require('./utils/mahasiswa');
+require('./utils/db');
+const { Mahasiswa } = require('./models/mahasiswa');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const methodOverride = require('method-override');
 const mahasiswaRoute = require('./routes/mahasiswa-route');
 const contactRoute = require('./routes/contact-route');
 
 const app = express();
 const port = 3000;
 
+// setup method override
+app.use(methodOverride('_method'));
+
+// setup ejs
 // Gunakan ejs
 app.set('view engine', 'ejs');
-
 // Third-party niddleware
 app.use(expressLayouts);
-
 // Build-in middleware 
 app.use(express.static('public')) 
 app.use(express.urlencoded({ extended: true }));
 
-// konfigurasi
+// konfigurasi flash
 app.use(cookieParser('secret'));
 app.use(
     session({
@@ -33,9 +37,8 @@ app.use(
 app.use(flash());
 
 
-app.get('/', (req, res) => {
-    // res.sendFile('./index.html', { root: __dirname });
-    const allMahasiswa = loadMahasiswa();
+app.get('/', async (req, res) => {
+    const allMahasiswa = await Mahasiswa.find();
     res.render('index', { 
         nama: 'Rafly Rayhansyah', 
         title: 'Halaman Home',
@@ -54,11 +57,6 @@ app.get('/about', (req, res) => {
 app.use('/', mahasiswaRoute);
 
 app.use('/', contactRoute);
-
-app.use((req,res) => {
-    res.status(404);
-    res.send("<h1>404<br>Not Found</h1>");
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
